@@ -59,6 +59,43 @@
    (collection-file-path "MathJax" "scribble-math")))
 |#
 
+
+;; take into account last scroll event, to avoid locking up the page
+;; TODO: should actually pause the whole MathJax queue, as it still locks
+;; up the browser between "processing Math" and "rendering math".
+;; + set the #MathJax_Message CSS to opacity: 0.5.
+(define gradually-rename-texMath-to-texMathX-js #<<EOJS
+(function() {
+	var lastScroll = -1001;
+	scrollEventHandler = function(e) {
+		lastScroll = new Date().getTime();
+	};
+	window.addEventListener("scroll", scrollEventHandler);
+	var e = document.getElementsByClassName("texMath");
+    var pos = 0;
+ 	var o = {};
+    process = function() {
+		if (pos < e.length){
+			if (new Date().getTime() - lastScroll > 1000) {
+				if (e.id == "") { e.id = "texMathElement" + pos; }
+ 				e[pos++].className = "texMathX";
+				MathJax.Hub.Queue(["Typeset",MathJax.Hub,e.id]);
+				MathJax.Hub.Queue(["next",o]);
+            } else {
+				window.setTimeout(process, 100);
+            }
+        } else {
+			window.removeEventListener("scroll", scrollEventHandler);
+        }
+    };
+	o.next = function() {
+		window.setTimeout(process, 100);
+    }
+	process();
+})();
+EOJS
+  )
+
 (define (load-script-string src [async-defer #f])
   (string-append
    #<<EOJS
