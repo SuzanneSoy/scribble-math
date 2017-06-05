@@ -231,7 +231,7 @@ EOTEX
                'exact-chars)))
 
 (define math-display-style-latex
-  (style "texMathInline"
+  (style "texMathDisplay"
          (list (tex-addition tex-commands)
                'exact-chars)))
 
