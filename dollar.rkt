@@ -132,6 +132,56 @@ EOJS
    ;; </script>
    (load-script-string "MathJax/MathJax.js?config=default")))
 
+#;(define load-mathjax-code
+  (string->bytes/utf-8
+   (string-append (load-script-string "MathJax/MathJax.js?config=default")
+                  #<<EOJS
+(function(f) {
+  // A "simple" onLoad function
+  if (window.document.readyState == "complete") {
+    f();
+  } else if (window.document.addEventListener) {
+    window.document.addEventListener("DOMContentLoaded", f, false);
+  } else if (window.attachEvent) {
+    window.attachEvent("onreadystatechange", function() {
+      if (window.document.readyState == "complete") {
+        f();
+      }
+    });
+  } else {
+    var oldLoad = window.onload;
+    if (typeof(oldLoad) == "function") {
+      window.onload = function() {
+        try {
+          oldLoad();
+        } finally {
+          f();
+        }
+      };
+    } else {
+      window.onload = f;
+    }
+  }
+})(function() {
+  var wrap = function(elts, opn, cloz) {
+    var eltsX = [];
+    for (var i = 0; i < elts.length; i++) { eltsX[i] = elts[i]; }
+    for (var i = 0; i < eltsX.length; i++) {
+      var opntxt = document.createTextNode(opn);
+      var cloztxt = document.createTextNode(cloz);
+      var e = eltsX[i];
+      e.insertBefore(opntxt, e.firstChild);
+      e.appendChild(cloztxt);
+      e.className = e.className.replace(/\b(texMathInline|texMathDisplay)\b/g,
+                                        "texMath");
+    }
+  };
+  wrap(document.getElementsByClassName("texMathInline"), "\\(", "\\)");
+  wrap(document.getElementsByClassName("texMathDisplay"), "\\[", "\\]");
+});
+EOJS
+                  )))
+
 (define load-katex-code+style
   (string->bytes/utf-8
    (string-append (load-style-string "katex/katex.min.css")
@@ -194,21 +244,23 @@ EOJS
 (define tex-commands
   (string->bytes/utf-8 #<<EOTEX
 \def\texMath#1{#1}
-\def\texMathInline#1{$#1$}
-\def\texMathDisplay#1{\[#1\]}
+\def\texMathInline#1{\ensuremath{#1}}
+\def\texMathDisplay#1{\ifmmode #1\else\[#1\]\fi}
 EOTEX
                        ))
 
 (define math-inline-style-mathjax
-  (style "texMath"
-         (list #;(make-css-addition math-inline.css)
+  (style "math"
+         (list (alt-tag "span")
+               #;(make-css-addition math-inline.css)
                (install-resource mathjax-dir)
                (js-addition load-mathjax-code)
                'exact-chars)))
 
 (define math-display-style-mathjax
-  (style "texMath"
-         (list #;(make-css-addition math-inline.css)
+  (style "math"
+         (list (alt-tag "div")
+               #;(make-css-addition math-inline.css)
                (install-resource mathjax-dir)
                (js-addition load-mathjax-code)
                'exact-chars)))
@@ -236,14 +288,14 @@ EOTEX
                'exact-chars)))
 
 (define ($-mathjax strs)
-  (elem #:style math-inline-style-mathjax `("$" ,@strs "$")))
+  (elem #:style math-inline-style-mathjax strs))
 
 (define ($-katex strs)
   (elem #:style math-inline-style-katex
                 (map katex-convert-unicode (flatten strs))))
 
 (define ($$-mathjax strs)
-  (elem #:style math-display-style-mathjax `("\\[" ,@strs "\\]")))
+  (elem #:style math-display-style-mathjax strs))
 
 (define ($$-katex strs)
   (elem #:style math-display-style-katex

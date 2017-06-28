@@ -101,7 +101,7 @@ MathJax.Hub.Config({
   //  jax array above, and "asciimath2jax.js" if you using "input/AsciiMath".
   //  Include "jsmath2jax.js" if you are converting from using jsMath to MathJax.
   //
-  extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
+  extensions: ["jsMath2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
   
   //
   //  Patterns to remove from before and after math script tags.  If you are not
