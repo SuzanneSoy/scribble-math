@@ -314,19 +314,19 @@ EOTEX
   ($$-html-handler $$-mathjax)
   (void))
 
-(define ($ s . strs)
+(define ($ . strs)
   (let ([$- ($-html-handler)])
     (cond-element
-     [html ($- `(,s . ,strs))]
-     [latex (elem #:style math-inline-style-latex `(,s ,@strs))]
+     [html ($- strs)]
+     [latex (elem #:style math-inline-style-latex strs)]
      ;; TODO: use a unicode representation of math, e.g. x^2 becomes x²
-     [else `(,s . ,strs)])))
+     [else strs])))
 
-(define ($$ s . strs)
+(define ($$ . strs)
   (let ([$$- ($$-html-handler)])
     (cond-element
-     [html ($$- `(,s . ,strs))]
-     [latex (elem #:style math-display-style-latex `(,s ,@strs))]
+     [html ($$- strs)]
+     [latex (elem #:style math-display-style-latex strs)]
      ;; TODO: use a spatial representation of display math, e.g.
      ;; \sum_{i=0}^n x_i^2
      ;; becomes:
@@ -341,4 +341,4 @@ EOTEX
      ;;  n
      ;;  ∑  xᵢ²
      ;; i=0
-     [else `(,s . ,strs)])))
+     [else strs])))
