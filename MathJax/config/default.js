@@ -665,7 +665,7 @@ MathJax.Hub.Config({
     //  use of the STIX fonts, or set it to an empty list, [], if
     //  you want to force MathJax to use web-based or image fonts.
     //
-    availableFonts: ["STIX","TeX"],
+    availableFonts: ["STIX-Web","TeX"],
     
     //
     //  This is the preferred font to use when more than one of those
