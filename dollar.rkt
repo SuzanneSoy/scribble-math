@@ -287,12 +287,14 @@ EOTEX
          (list (tex-addition tex-commands)
                'exact-chars)))
 
+;; TODO: handle delayed elements here instead of just flattening.
 (define ($-mathjax strs)
-  (elem #:style math-inline-style-mathjax strs))
+  (elem #:style math-inline-style-mathjax
+        (map katex-convert-unicode (flatten strs))))
 
 (define ($-katex strs)
   (elem #:style math-inline-style-katex
-                (map katex-convert-unicode (flatten strs))))
+        (map katex-convert-unicode (flatten strs))))
 
 (define ($$-mathjax strs)
   (elem #:style math-display-style-mathjax strs))
