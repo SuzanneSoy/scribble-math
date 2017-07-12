@@ -8,7 +8,7 @@
                  (string-join (map regexp-quote literal-alternatives) "|")
                  ")"))
 
-(define (string-replace* str sym→*)
+(define (string-replace* str mathmode? sym→*)
   (define →* (map (λ (x)
                     (cons (symbol->string (car x))
                           (cadr x)))
@@ -17,12 +17,16 @@
   (regexp-replace* (literal-alternatives→regexp (map car →*))
                    str
                    (λ (found . _)
-                     (hash-ref hash→* found))))
+                     (let ([replacement (hash-ref hash→* found)])
+                       (if mathmode?
+                           replacement
+                           (string-append "$" replacement "$"))))))
 
-(define (katex-convert-unicode str)
+(define (katex-convert-unicode str mathmode?)
   (if (string? str)
       (string-replace*
        str
+       mathmode?
        '([₀ "{}_0"]
          [₁ "{}_1"]
          [₂ "{}_2"]
