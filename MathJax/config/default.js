@@ -759,7 +759,7 @@ MathJax.Hub.Config({
     //  faster, but can produce slightly less accurate character placements,
     //  especially in width fractions or roots.
     //
-    noReflows: true,
+    noReflows: false,
 
     
     //
