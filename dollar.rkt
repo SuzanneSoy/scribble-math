@@ -292,14 +292,14 @@ EOTEX
 
 (define ($-katex strs)
   (elem #:style math-inline-style-katex
-                (map katex-convert-unicode (flatten strs))))
+                (map (λ (s) (katex-convert-unicode s #t)) (flatten strs))))
 
 (define ($$-mathjax strs)
   (elem #:style math-display-style-mathjax strs))
 
 (define ($$-katex strs)
   (elem #:style math-display-style-katex
-                (map katex-convert-unicode (flatten strs))))
+                (map (λ (s) (katex-convert-unicode s #t)) (flatten strs))))
 
 (define $-html-handler (make-parameter $-katex))
 (define $$-html-handler (make-parameter $$-katex))
