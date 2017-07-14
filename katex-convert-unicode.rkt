@@ -100,5 +100,6 @@
          [⋯ "\\cdots"]
          [⋰ "\\uddots"] ;; or \iddots from package mathdots, see http://tex.stackexchange.com/a/17650
          [⋱ "\\ddots"]
-         [∌ "\\notni"]))
+         [∌ "\\notni"]
+         [ℰ "\\mathcal{E}"]))
       str))
