@@ -103,5 +103,6 @@
          [⋱ "\\ddots{}"]
          [∌ "\\notni{}"]
          [ℰ "\\mathcal{E}"]
+         [• "\\bullet"]
          ))
       str))
