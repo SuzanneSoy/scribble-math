@@ -100,26 +100,26 @@ EOJS
 (define (load-script-string src [async-defer #f])
   (string-append
    #<<EOJS
-(function() {
-  document.write('<scr' + 'ipt type="text/javascript" src="
+(function() {document.write('<scr' + 'ipt type="text/javascript" src="
 EOJS
    src
    "\""
    (if async-defer " async=\"async\" defer=\"defer\" " "")
    #<<EOJS
-></scr' + 'ipt>');
-})();
+></scr' + 'ipt>');})();
 EOJS
    ))
 
 (define (load-style-string src)
   (string-append
    #<<EOJS
-(function() {document.write('<link rel="stylesheet" href="
+(function() {
+  document.write('<link rel="stylesheet" href="
 EOJS
    src
    #<<EOJS
-" />');})();
+" />');
+})();
 EOJS
    ))
 
