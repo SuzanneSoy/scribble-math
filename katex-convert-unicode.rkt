@@ -112,6 +112,9 @@
       [⋀ "\\bigwedge{}"]
       [⋁ "\\bigvee{}"]
       [± "\\pm{}"]
+      [≟ "\\stackrel{?}{=}"]
+      [≛ "\\stackrel{*}{=}"]
+      [≝ "\\stackrel{\\scriptscriptstyle\\mathsf{def}}{=}"]
       ))
   (if (string? str)
       (string-replace*
