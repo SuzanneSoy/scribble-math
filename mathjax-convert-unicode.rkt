@@ -15,7 +15,7 @@
       [⁺ "{}^+"]
       [⁻ "{}^-"]
       ;; TODO:
-      [❲ "\\ifmathjax{\\unicode{x2272}}\\iflatex{❲}"]
-      [❳ "\\ifmathjax{\\unicode{x2273}}\\iflatex{❳}"]
+      [❲ "\\ifmathjax{\\unicode{x2772}}\\iflatex{❲}"]
+      [❳ "\\ifmathjax{\\unicode{x2773}}\\iflatex{❳}"]
       ))
   (katex-convert-unicode str* mathmode? more-sym→*))
