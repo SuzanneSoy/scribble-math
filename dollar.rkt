@@ -8,6 +8,7 @@
          racket/runtime-path
          setup/collects
          "katex-convert-unicode.rkt"
+         "mathjax-convert-unicode.rkt"
          racket/list)
 
 (provide $
@@ -114,13 +115,11 @@ EOJS
 (define (load-style-string src)
   (string-append
    #<<EOJS
-(function() {
-  document.write('<link rel="stylesheet" href="
+(function() {document.write('<link rel="stylesheet" href="
 EOJS
    src
    #<<EOJS
-" />');
-})();
+" />');})();
 EOJS
    ))
 
