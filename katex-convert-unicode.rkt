@@ -101,6 +101,7 @@
       [⋱ "\\ddots{}"]
       [∌ "\\notni{}"]
       [ℰ "\\mathcal{E}"]
+      [𝒮 "\\mathcal{S}"]
       [• "\\bullet{}"]
       [|'| "{}'"]
       [′ "{}'"]
@@ -117,6 +118,7 @@
       [≟ "\\stackrel{?}{=}"]
       [≛ "\\stackrel{*}{=}"]
       [≝ "\\stackrel{\\scriptscriptstyle\\mathsf{def}}{=}"]
+      [∃ "\\exists{}"]
       ))
   (if (string? str)
       (string-replace*

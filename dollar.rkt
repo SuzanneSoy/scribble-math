@@ -321,11 +321,11 @@ EOTEX
      ;; TODO: use a unicode representation of math, e.g. x^2 becomes x²
      [else strs])))
 
-(define ($$ . strs)
+(define ($$ #:latex-style [latex-style math-display-style-latex] . strs)
   (let ([$$- ($$-html-handler)])
     (cond-element
      [html ($$- strs)]
-     [latex (elem #:style math-display-style-latex strs)]
+     [latex (elem #:style latex-style strs)]
      ;; TODO: use a spatial representation of display math, e.g.
      ;; \sum_{i=0}^n x_i^2
      ;; becomes:

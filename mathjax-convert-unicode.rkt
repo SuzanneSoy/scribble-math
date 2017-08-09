@@ -19,5 +19,7 @@
       [❳ "\\ifmathjax{\\unicode{x2773}}\\iflatex{❳}"]
       [φ "\\phi"]
       [▷ "\\triangleright"]
+      [∄ "\\nexists"]
+      [≠ "\\neq"]
       ))
   (katex-convert-unicode str* mathmode? more-sym→*))
