@@ -95,6 +95,7 @@
       [ι "\\iota" "\\ensuremath{\\iota}"]
       [ν "\\nu" "\\ensuremath{\\nu}"]
       [υ "\\upsilon" "\\ensuremath{\\upsilon}"]
+      [ς "\\varsigma" "\\ensuremath{\\varsigma}"]
       [∀ "\\forall{}"]
       [∃ "\\exists{}"]
       [≡ "\\equiv{}"]
