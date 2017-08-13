@@ -11,7 +11,6 @@
            "\\ifmathjax{\\mathrel{{\\raise0.9mu{::}\\hspace{-4mu}=}}}"
            "\\iflatex{\\Coloneqq}")]
       [∈ "\\in{}"]
-      [κ "\\kappa"]
       [⁺ "{}^+"]
       [⁻ "{}^-"]
       ;; TODO:
