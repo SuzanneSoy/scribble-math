@@ -123,8 +123,9 @@
       [≟ "\\stackrel{?}{=}"]
       [≛ "\\stackrel{*}{=}"]
       [≝ "\\stackrel{\\scriptscriptstyle\\mathsf{def}}{=}"]
-      [∃ "\\exists{}"]
-      [⋅ "\\cdot"]
+      [∃ "\\exists{}" "\\ensuremath{\\exists}"]
+      [⋅ "\\cdot{}" "\\ensuremath{\\cdot}"]
+      [ϱ "\\varrho{}" "\\ensuremath{\\varrho}"]
       ))
   (if (string? str)
       (string-replace*
