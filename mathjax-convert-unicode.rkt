@@ -20,5 +20,10 @@
       [▷ "\\triangleright"]
       [∄ "\\nexists"]
       [≠ "\\neq"]
-      ))
+      [❬ ,(string-append
+           "\\ifmathjax{\\hspace{-0.15ex}\\unicode{x276C}\\hspace{-0.15ex}}"
+           "\\iflatex{❬}")]
+      [❭ ,(string-append
+           "\\ifmathjax{\\hspace{-0.15ex}\\unicode{x276D}\\hspace{-0.15ex}}"
+           "\\iflatex{❭}")]))
   (katex-convert-unicode str* mathmode? more-sym→*))
