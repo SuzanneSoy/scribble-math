@@ -21,9 +21,9 @@
       [∄ "\\nexists"]
       [≠ "\\neq"]
       [❬ ,(string-append
-           "\\ifmathjax{\\hspace{-0.15ex}\\unicode{x276C}\\hspace{-0.15ex}}"
+           "\\ifmathjax{\\hspace{-0.2ex}\\unicode{x276C}\\hspace{-0.2ex}}"
            "\\iflatex{❬}")]
       [❭ ,(string-append
-           "\\ifmathjax{\\hspace{-0.15ex}\\unicode{x276D}\\hspace{-0.15ex}}"
+           "\\ifmathjax{\\hspace{-0.2ex}\\unicode{x276D}\\hspace{-0.2ex}}"
            "\\iflatex{❭}")]))
   (katex-convert-unicode str* mathmode? more-sym→*))
