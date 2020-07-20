@@ -164,6 +164,24 @@ details see the documentation of @racket[with-html5].
  that when the page is loaded into a browser, MathJax can
  recognise it and render it in @tech{display mode}.}
 
+@defproc[($-tex2svg [math (listof? string?)]) element?]{
+ Produces an @racket[element?] renders an HTML SVG literal.
+ It is rendered in @tech{inline mode} math using @tt{tex2svg}.
+ More precisely, the resulting element uses the @racket[xexpr-property] to
+ render the SVG directly to the HTML document.
+ This means no new scripts or stylesheets are added to the document.
+ It also has no style, so its style cannot be customized.
+ }
+
+@defproc[($$-tex2svg [math (listof? string?)]) element?]{
+Produces an @racket[element?] renders an HTML SVG literal.
+It is rendered in @tech{display mode} math using @tt{tex2svg}.
+More precisely, the resulting element uses the @racket[xexpr-property] to
+render the SVG directly to the HTML document.
+This means no new scripts or stylesheets are added to the document.
+It also has no style, so its style cannot be customized.
+}
+
 @defproc[(use-katex) void?]{
  This shorthand calls @racket[($-html-handler $-katex)]
  and @racket[($$-html-handler $$-katex)]. The mathematical
@@ -194,6 +212,35 @@ details see the documentation of @racket[with-html5].
  page if the user changes the default before typesetting any
  math.}
 
+@defproc[(use-tex2svg) void?]{
+ This shorthand calls @racket[($-html-handler $-tex2svg)] and
+ @racket[($$-html-handler $$-tex2svg)]. The mathematical forumulas passed to
+ @racket[$] and @racket[$$] which appear later in the document will therefore be
+ typeset using @tt{tex2svg}.
+
+ No new CSS or JavaScript libraries will be added to the document. Instead, the
+ generated HTML document have the math embedded directly an @tt{svg}.
+
+ This requires that @tt{tex2svg} is installed on the system. You can install it
+ globally via @tt{sudo npm install --global mathjax-node-cli} or locally with
+ @tt{npm install mathjax-node-cli}. The backend will attempt to find the
+ @tt{tex2svg}, preferring local sources. You can set the path manually with
+ the parameter @racket[current-tex2svg-path].
+
+ @tt{tex2svg} will only be used when rendering an HTML document, and only if it
+ uses @racket[$] or @racket[$$] to render math. It is therefore safe to call
+ this function in libraries to change the default handler.
+}
+
+@defparam[current-tex2svg-path path path? #:value #f]{
+A parameter whose value is the path to the @tt{tex2svg} binary.
+This binary is used to transform math code into HTML when using the @tt{tex2svg}
+backend.
+The functions @racket[$] and @racket[$$] use this parameter only when rendering
+the document as HTML.
+}
+
+
 @;@$${\sum_{i=0}ⁿ xᵢ³}
 
 When using MathJax, @racket[$] and @racket[$$] wrap their
@@ -203,6 +250,10 @@ respectively, and insert it in an element with the class
 process elements with this class, so it is safe to use
 @tt{$} signs in the source document. For example, the text
 $\sum x^3$ is typeset as-is, like the rest of the text.
+
+When using @tt{tex2svg}, no additional JavaScript processing is done on the
+page, so it is safe to use @tt{$} signs in the source document. For example, the
+text $\sum x^3$ is typeset as-is, like the rest of the text.
 
 @section{Drawing figures with Asymptote}
 
