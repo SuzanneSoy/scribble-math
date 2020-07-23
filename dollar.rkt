@@ -13,7 +13,8 @@
          (only-in xml cdata)
          (only-in racket/match match)
          (only-in racket/system process)
-         (only-in racket/port port->string))
+         (only-in racket/port port->string)
+         (for-syntax racket/base))
 
 (provide $
          $$
