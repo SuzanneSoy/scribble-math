@@ -35,9 +35,11 @@
 (define-syntax (if-version≥6.12 stx)
   (syntax-case stx ()
     [(_ . rest)
-     (if (version>= (version) "6.11.0.900")
-         #'(begin . rest)
-         #'(begin))]))
+     (if (and (not (regexp-match #px"^6\.11\.0\.900$" (version)))
+              (or (regexp-match #px"^6(\\.([0123456789]|10|11)(\\..*|)|)$" (version))
+                  (regexp-match #px"^[123245]\\..*$" (version))))
+         #'(begin)
+         #'(begin . rest))]))
 ;; KaTeX does not work well with the HTML 4.01 Transitional loose DTD,
 ;; so we define a style modifier which replaces the prefix for HTML rendering.
 (define (with-html5 doc-style)
