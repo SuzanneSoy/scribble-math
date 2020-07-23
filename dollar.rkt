@@ -10,7 +10,6 @@
          "katex-convert-unicode.rkt"
          "mathjax-convert-unicode.rkt"
          racket/list
-         version-case
          (only-in xml cdata)
          (only-in racket/match match)
          (only-in racket/system process)
@@ -32,6 +31,12 @@
          current-tex2svg-path
          with-html5)
 
+(define-syntax (if-version≥6.12 stx)
+  (syntax-case stx ()
+    [(_ . rest)
+     (if (version>= (version) "6.11.0.900")
+         #'(begin . rest)
+         #'(begin))]))
 ;; KaTeX does not work well with the HTML 4.01 Transitional loose DTD,
 ;; so we define a style modifier which replaces the prefix for HTML rendering.
 (define (with-html5 doc-style)
@@ -302,8 +307,7 @@ EOTEX
   (elem #:style math-inline-style-katex
                 (map (λ (s) (katex-convert-unicode s #t)) (flatten strs))))
 
-(version-case
- [(version>= (version) "6.11.0.900"]
+(if-version≥6.12
   (define current-tex2svg-path (make-parameter #f))
 
   (define (find-tex2svg)
@@ -337,7 +341,7 @@ EOTEX
                          (list
                           (xexpr-property
                            (cdata #f #f (tex2svg #:inline #t (flatten strs)))
-                           (cdata #f #f ""))))))])
+                           (cdata #f #f "")))))))
 
 (define ($$-mathjax strs)
   (elem #:style math-display-style-mathjax strs))
@@ -346,14 +350,13 @@ EOTEX
   (elem #:style math-display-style-katex
                 (map (λ (s) (katex-convert-unicode s #t)) (flatten strs))))
 
-(version-case
- [(version>= (version) "6.11.0.900"]
+(if-version≥6.12
   (define ($$-tex2svg strs)
     (elem #:style (style #f
                          (list
                           (xexpr-property
                            (cdata #f #f (tex2svg (flatten strs)))
-                           (cdata #f #f ""))))))])
+                           (cdata #f #f "")))))))
 
 (define $-html-handler (make-parameter $-katex))
 (define $$-html-handler (make-parameter $$-katex))
@@ -368,12 +371,11 @@ EOTEX
   ($$-html-handler $$-mathjax)
   (void))
 
-(version-case
- [(version>= (version) "6.11.0.900"]
+(if-version≥6.12
   (define (use-tex2svg)
     ($-html-handler $-tex2svg)
     ($$-html-handler $$-tex2svg)
-    (void))])
+    (void)))
 
 (define ($ . strs)
   (let ([$- ($-html-handler)])

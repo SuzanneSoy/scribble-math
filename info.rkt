@@ -2,8 +2,7 @@
 (define collection "scribble-math")
 (define deps '("base"
                "rackunit-lib"
-               "scribble-lib"
-               "version-case"))
+               "scribble-lib"))
 (define build-deps '("scribble-lib"
                      "racket-doc"
                      "at-exp-lib"
