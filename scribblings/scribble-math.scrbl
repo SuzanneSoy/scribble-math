@@ -165,7 +165,8 @@ details see the documentation of @racket[with-html5].
  recognise it and render it in @tech{display mode}.}
 
 @defproc[($-tex2svg [math (listof? string?)]) element?]{
- Produces an @racket[element?] renders an HTML SVG literal.
+ Produces an @racket[element?] which contains the given
+ @racket[math] rendered as an HTML SVG literal.
  It is rendered in @tech{inline mode} math using @tt{tex2svg}.
  More precisely, the resulting element uses the @racket[xexpr-property] to
  render the SVG directly to the HTML document.
@@ -174,7 +175,8 @@ details see the documentation of @racket[with-html5].
  }
 
 @defproc[($$-tex2svg [math (listof? string?)]) element?]{
-Produces an @racket[element?] renders an HTML SVG literal.
+Produces an @racket[element?] which contains the given
+@racket[math] rendered as an HTML SVG literal.
 It is rendered in @tech{display mode} math using @tt{tex2svg}.
 More precisely, the resulting element uses the @racket[xexpr-property] to
 render the SVG directly to the HTML document.
@@ -236,8 +238,8 @@ It also has no style, so its style cannot be customized.
 A parameter whose value is the path to the @tt{tex2svg} binary.
 This binary is used to transform math code into HTML when using the @tt{tex2svg}
 backend.
-The functions @racket[$] and @racket[$$] use this parameter only when rendering
-the document as HTML.
+The functions @racket[$-tex2svg] and @racket[$$-tex2svg] use this parameter only
+when rendering the document as HTML.
 }
 
 
