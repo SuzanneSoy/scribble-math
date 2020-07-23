@@ -35,7 +35,7 @@
 (define-syntax (if-version≥6.12 stx)
   (syntax-case stx ()
     [(_ . rest)
-     (if (and (not (regexp-match #px"^6\.11\.0\.900$" (version)))
+     (if (and (not (regexp-match #px"^6\\.11\\.0\\.900$" (version)))
               (or (regexp-match #px"^6(\\.([0123456789]|10|11)(\\..*|)|)$" (version))
                   (regexp-match #px"^[123245]\\..*$" (version))))
          #'(begin)
