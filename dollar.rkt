@@ -10,6 +10,7 @@
          "katex-convert-unicode.rkt"
          "mathjax-convert-unicode.rkt"
          racket/list
+         version-case
          (only-in xml cdata)
          (only-in racket/match match)
          (only-in racket/system process)
@@ -301,40 +302,42 @@ EOTEX
   (elem #:style math-inline-style-katex
                 (map (λ (s) (katex-convert-unicode s #t)) (flatten strs))))
 
-(define current-tex2svg-path (make-parameter #f))
+(version-case
+ [(version>= (version) "6.11.0.900"]
+  (define current-tex2svg-path (make-parameter #f))
 
-(define (find-tex2svg)
-  (define paths
-    (list
-     "./node_modules/.bin/"
-     "/usr/local/lib/node_modules/mathjax-node-cli/bin/"
-     "/usr/lib/node_modules/mathjax-node-cli/bin/"
-     "/usr/local/bin/"
-     "/usr/local/sbin/"
-     "/usr/bin/"
-     "/usr/sbin/"))
-  (for/or ([path paths])
-    (file-exists? (format "~a/tex2svg" path))))
+  (define (find-tex2svg)
+    (define paths
+      (list
+       "./node_modules/.bin/"
+       "/usr/local/lib/node_modules/mathjax-node-cli/bin/"
+       "/usr/lib/node_modules/mathjax-node-cli/bin/"
+       "/usr/local/bin/"
+       "/usr/local/sbin/"
+       "/usr/bin/"
+       "/usr/sbin/"))
+    (for/or ([path paths])
+      (file-exists? (format "~a/tex2svg" path))))
 
-(define tex2svg
-  (let ([tex2svg-path (find-tex2svg)])
-    (lambda (#:inline [inline #f] strs)
-      (if (or (current-tex2svg-path) tex2svg-path)
-          (match (process (format
-                           "tex2svg ~a'~a'"
-                           (if inline "--inline " "")
-                           (apply string-append strs)))
-            [`(,stdout . ,_)
-             (port->string stdout)])
-          (error 'tex2svg "Cannot find tex2svg in path or common places; set path manually with current-tex2svg-path.")))))
+  (define tex2svg
+    (let ([tex2svg-path (find-tex2svg)])
+      (lambda (#:inline [inline #f] strs)
+        (if (or (current-tex2svg-path) tex2svg-path)
+            (match (process (format
+                             "tex2svg ~a'~a'"
+                             (if inline "--inline " "")
+                                 (apply string-append strs)))
+              [`(,stdout . ,_)
+               (port->string stdout)])
+            (error 'tex2svg "Cannot find tex2svg in path or common places; set path manually with current-tex2svg-path.")))))
 
 
-(define ($-tex2svg strs)
-  (elem #:style (style #f
-                       (list
-                        (xexpr-property
-                         (cdata #f #f (tex2svg #:inline #t (flatten strs)))
-                         (cdata #f #f ""))))))
+  (define ($-tex2svg strs)
+    (elem #:style (style #f
+                         (list
+                          (xexpr-property
+                           (cdata #f #f (tex2svg #:inline #t (flatten strs)))
+                           (cdata #f #f ""))))))])
 
 (define ($$-mathjax strs)
   (elem #:style math-display-style-mathjax strs))
@@ -343,12 +346,14 @@ EOTEX
   (elem #:style math-display-style-katex
                 (map (λ (s) (katex-convert-unicode s #t)) (flatten strs))))
 
-(define ($$-tex2svg strs)
-  (elem #:style (style #f
-                       (list
-                        (xexpr-property
-                         (cdata #f #f (tex2svg (flatten strs)))
-                         (cdata #f #f ""))))))
+(version-case
+ [(version>= (version) "6.11.0.900"]
+  (define ($$-tex2svg strs)
+    (elem #:style (style #f
+                         (list
+                          (xexpr-property
+                           (cdata #f #f (tex2svg (flatten strs)))
+                           (cdata #f #f ""))))))])
 
 (define $-html-handler (make-parameter $-katex))
 (define $$-html-handler (make-parameter $$-katex))
@@ -363,10 +368,12 @@ EOTEX
   ($$-html-handler $$-mathjax)
   (void))
 
-(define (use-tex2svg)
-  ($-html-handler $-tex2svg)
-  ($$-html-handler $$-tex2svg)
-  (void))
+(version-case
+ [(version>= (version) "6.11.0.900"]
+  (define (use-tex2svg)
+    ($-html-handler $-tex2svg)
+    ($$-html-handler $$-tex2svg)
+    (void))])
 
 (define ($ . strs)
   (let ([$- ($-html-handler)])
