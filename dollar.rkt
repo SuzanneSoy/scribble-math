@@ -9,7 +9,12 @@
          setup/collects
          "katex-convert-unicode.rkt"
          "mathjax-convert-unicode.rkt"
-         racket/list)
+         racket/list
+         (only-in xml cdata)
+         (only-in racket/match match)
+         (only-in racket/system process)
+         (only-in racket/port port->string)
+         (for-syntax racket/base))
 
 (provide $
          $$
@@ -23,6 +28,20 @@
          use-mathjax
          with-html5)
 
+(define-syntax (if-version≥6.12 stx)
+  (syntax-case stx ()
+    [(_ . rest)
+     (if (and (not (regexp-match #px"^6\\.11\\.0\\.900$" (version)))
+              (or (regexp-match #px"^6(\\.([0123456789]|10|11)(\\..*|)|)$" (version))
+                  (regexp-match #px"^[123245]\\..*$" (version))))
+         #'(begin)
+         #'(begin . rest))]))
+
+(if-version≥6.12
+  (provide $-tex2svg
+           $$-tex2svg
+           use-tex2svg
+           current-tex2svg-path))
 ;; KaTeX does not work well with the HTML 4.01 Transitional loose DTD,
 ;; so we define a style modifier which replaces the prefix for HTML rendering.
 (define (with-html5 doc-style)
@@ -293,12 +312,56 @@ EOTEX
   (elem #:style math-inline-style-katex
                 (map (λ (s) (katex-convert-unicode s #t)) (flatten strs))))
 
+(if-version≥6.12
+  (define current-tex2svg-path (make-parameter #f))
+
+  (define (find-tex2svg)
+    (define paths
+      (list
+       "./node_modules/.bin/"
+       "/usr/local/lib/node_modules/mathjax-node-cli/bin/"
+       "/usr/lib/node_modules/mathjax-node-cli/bin/"
+       "/usr/local/bin/"
+       "/usr/local/sbin/"
+       "/usr/bin/"
+       "/usr/sbin/"))
+    (for/or ([path paths])
+      (file-exists? (format "~a/tex2svg" path))))
+
+  (define tex2svg
+    (let ([tex2svg-path (find-tex2svg)])
+      (lambda (#:inline [inline #f] strs)
+        (if (or (current-tex2svg-path) tex2svg-path)
+            (match (process (format
+                             "tex2svg ~a'~a'"
+                             (if inline "--inline " "")
+                                 (apply string-append strs)))
+              [`(,stdout . ,_)
+               (port->string stdout)])
+            (error 'tex2svg "Cannot find tex2svg in path or common places; set path manually with current-tex2svg-path.")))))
+
+
+  (define ($-tex2svg strs)
+    (elem #:style (style #f
+                         (list
+                          (xexpr-property
+                           (cdata #f #f (tex2svg #:inline #t (flatten strs)))
+                           (cdata #f #f "")))))))
+
 (define ($$-mathjax strs)
   (elem #:style math-display-style-mathjax strs))
 
 (define ($$-katex strs)
   (elem #:style math-display-style-katex
                 (map (λ (s) (katex-convert-unicode s #t)) (flatten strs))))
+
+(if-version≥6.12
+  (define ($$-tex2svg strs)
+    (elem #:style (style #f
+                         (list
+                          (xexpr-property
+                           (cdata #f #f (tex2svg (flatten strs)))
+                           (cdata #f #f "")))))))
 
 (define $-html-handler (make-parameter $-katex))
 (define $$-html-handler (make-parameter $$-katex))
@@ -312,6 +375,12 @@ EOTEX
   ($-html-handler $-mathjax)
   ($$-html-handler $$-mathjax)
   (void))
+
+(if-version≥6.12
+  (define (use-tex2svg)
+    ($-html-handler $-tex2svg)
+    ($$-html-handler $$-tex2svg)
+    (void)))
 
 (define ($ . strs)
   (let ([$- ($-html-handler)])
