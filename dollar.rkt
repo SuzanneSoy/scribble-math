@@ -24,12 +24,8 @@
          $$-katex
          $-mathjax
          $$-mathjax
-         $-tex2svg
-         $$-tex2svg
          use-katex
          use-mathjax
-         use-tex2svg
-         current-tex2svg-path
          with-html5)
 
 (define-syntax (if-version≥6.12 stx)
@@ -40,6 +36,12 @@
                   (regexp-match #px"^[123245]\\..*$" (version))))
          #'(begin)
          #'(begin . rest))]))
+
+(if-version≥6.12
+  (provide $-tex2svg
+           $$-tex2svg
+           use-tex2svg
+           current-tex2svg-path))
 ;; KaTeX does not work well with the HTML 4.01 Transitional loose DTD,
 ;; so we define a style modifier which replaces the prefix for HTML rendering.
 (define (with-html5 doc-style)
