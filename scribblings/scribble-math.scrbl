@@ -27,7 +27,7 @@
 @title[#:style (with-html5 manual-doc-style)]{@racketmodname[scribble-math]}
 @author[
  @author+email["Jens Axel Søgaard" "jensaxel@soegaard.net"]
- @author+email["Georges Dupéron" "georges.duperon@gmail.com"]]
+ @author+email["Suzanne Soy" "racket@suzanne.soy"]]
 
 @defmodule[scribble-math]
 
