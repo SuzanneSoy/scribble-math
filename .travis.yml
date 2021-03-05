@@ -22,23 +22,32 @@ env:
     # versions.
     #- RACKET_VERSION=6.0
     #- RACKET_VERSION=6.1
-    - RACKET_VERSION=6.1.1
-    - RACKET_VERSION=6.2
-    - RACKET_VERSION=6.3
-    - RACKET_VERSION=6.4
-    - RACKET_VERSION=6.5
-    - RACKET_VERSION=6.6
-    - RACKET_VERSION=6.7
-    - RACKET_VERSION=6.8
-    - RACKET_VERSION=6.9
-    - RACKET_VERSION=6.10
-    - RACKET_VERSION=6.10.1
-    - RACKET_VERSION=6.11
-    - RACKET_VERSION=6.12
-    - RACKET_VERSION=7.0
-    - RACKET_VERSION=7.1
-    - RACKET_VERSION=7.2
-    - RACKET_VERSION=HEAD
+    - RACKET_VERSION=6.1.1              COVER=false
+    - RACKET_VERSION=6.2                COVER=false
+    - RACKET_VERSION=6.3                COVER=false
+    - RACKET_VERSION=6.4                COVER=false
+    - RACKET_VERSION=6.5                COVER=false
+    - RACKET_VERSION=6.6                COVER=false
+    - RACKET_VERSION=6.7                COVER=false
+    - RACKET_VERSION=6.8                COVER=false
+    - RACKET_VERSION=6.9                COVER=true
+    - RACKET_VERSION=6.10               COVER=true
+    - RACKET_VERSION=6.10.1             COVER=true
+    - RACKET_VERSION=6.11               COVER=true
+    - RACKET_VERSION=6.12               COVER=true
+    - RACKET_VERSION=7.0                COVER=true
+    - RACKET_VERSION=7.1                COVER=true
+    - RACKET_VERSION=7.2                COVER=true
+    - RACKET_VERSION=7.3                COVER=true
+    - RACKET_VERSION=7.4                COVER=true
+    - RACKET_VERSION=7.5                COVER=true
+    - RACKET_VERSION=7.6                COVER=true
+    - RACKET_VERSION=7.7                COVER=true
+    - RACKET_VERSION=7.8                COVER=true
+    - RACKET_VERSION=7.9                COVER=true
+    - RACKET_VERSION=8.0                COVER=true
+    - RACKET_VERSION=8.0    RACKET_CS=1 COVER=true
+    - RACKET_VERSION=HEAD               COVER=true
 
 matrix:
   allow_failures:
@@ -79,5 +88,5 @@ script:
  - raco setup --check-pkg-deps --no-zo --no-launcher --no-install --no-post-install --no-docs --pkgs scribble-math
 
 after_success:
- - raco pkg install --deps search-auto cover cover-coveralls
- - raco cover -b -f coveralls -d $TRAVIS_BUILD_DIR/coverage .
+ - if $COVER; then raco pkg install --deps search-auto cover cover-coveralls; fi
+ - if $COVER; then raco cover -b -f coveralls -d $TRAVIS_BUILD_DIR/coverage .; fi
