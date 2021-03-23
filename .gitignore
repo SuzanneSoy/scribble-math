@@ -4,4 +4,9 @@
 .DS_Store
 compiled/
 /doc/
+/scribble-math.aux
+/scribble-math.tex
+/scribble-math.pdf
+/scribble-math.log
+/scribble-math.out
 # /asymptote-images/ needed to build on http://pkg-build.racket-lang.org/
