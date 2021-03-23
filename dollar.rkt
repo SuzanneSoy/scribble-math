@@ -261,7 +261,7 @@ EOJS
 
 (define tex-commands
   (string->bytes/utf-8 #<<EOTEX
-\def\texMath#1{#1}
+\def\math#1{\ensuremath{#1}}
 \def\texMathInline#1{\ensuremath{#1}}
 \def\texMathDisplay#1{\ifmmode #1\else\[#1\]\fi}
 EOTEX
