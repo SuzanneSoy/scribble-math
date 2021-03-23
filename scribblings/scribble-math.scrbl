@@ -132,7 +132,9 @@ details see the documentation of @racket[with-html5].
  stylesheets to the document. The resulting element also
  uses a specific CSS class so that when the page is loaded
  into a browser, KaTeX can recognise it and render it in 
- @tech{inline mode}.}
+ @tech{inline mode}.
+
+ @racket[($-katex "x^2")] renders as @$-katex{x^2}.}
 
 @defproc[($$-katex [math (listof? string?)]) element?]{
  Produces an @racket[element?] which contains the given 
@@ -142,7 +144,13 @@ details see the documentation of @racket[with-html5].
  properties to add scripts and stylesheets to the document.
  The resulting element also uses a specific CSS class so
  that when the page is loaded into a browser, KaTeX can
- recognise it and render it in @tech{display mode}.}
+ recognise it and render it in @tech{display mode}.
+
+ @racketblock[($$-katex "\\sum_{i=0}^n x_i^3")]
+
+ renders as:
+
+ @$$-katex{\sum_{i=0}^n x_i^3}}
 
 @defproc[($-mathjax [math (listof? string?)]) element?]{
  Produces an @racket[element?] which contains the given 
@@ -152,7 +160,9 @@ details see the documentation of @racket[with-html5].
  stylesheets to the document. The resulting element also
  uses a specific CSS class so that when the page is loaded
  into a browser, MathJax can recognise it and render it in 
- @tech{inline mode}.}
+ @tech{inline mode}.
+
+ @racket[($-mathjax "x^2")] renders as @$-mathjax{x^2}.}
 
 @defproc[($$-mathjax [math (listof? string?)]) element?]{
  Produces an @racket[element?] which contains the given 
@@ -162,7 +172,14 @@ details see the documentation of @racket[with-html5].
  properties to add scripts and stylesheets to the document.
  The resulting element also uses a specific CSS class so
  that when the page is loaded into a browser, MathJax can
- recognise it and render it in @tech{display mode}.}
+ recognise it and render it in @tech{display mode}.
+
+ @racketblock[($$-mathjax "\\sum_{i=0}^n x_i^3")]
+
+ renders as:
+
+ @$$-mathjax{\sum_{i=0}^n x_i^3}}
+
 
 @defproc[($-tex2svg [math (listof? string?)]) element?]{
  Produces an @racket[element?] which contains the given
@@ -172,6 +189,11 @@ details see the documentation of @racket[with-html5].
  render the SVG directly to the HTML document.
  This means no new scripts or stylesheets are added to the document.
  It also has no style, so its style cannot be customized.
+
+@; @racket[($-tex2svg "x^2")] renders as @$-tex2svg{x^2}.
+
+ This procedure requires that @code{tex2svg} be installed via
+ @code{npm install mathjax-node-cli}.
 
  This procedure requires Racket 6.12 or later.}
 
@@ -183,6 +205,16 @@ details see the documentation of @racket[with-html5].
  render the SVG directly to the HTML document.
  This means no new scripts or stylesheets are added to the document.
  It also has no style, so its style cannot be customized.
+
+
+@; @racketblock[($$-tex2svg "\\sum_{i=0}^n x_i^3")]
+
+@; renders as:
+
+@; @$$-tex2svg{\sum_{i=0}^n x_i^3}
+
+ This procedure requires that @code{tex2svg} be installed via
+ @code{npm install mathjax-node-cli}.
 
  This procedure requires Racket 6.12 or later.}
 
