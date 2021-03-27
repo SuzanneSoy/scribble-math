@@ -42,6 +42,10 @@
            $$-tex2svg
            use-tex2svg
            current-tex2svg-path))
+
+(define use-external-mathjax (make-parameter #f))
+(define use-external-katex (make-parameter #f))
+
 ;; KaTeX does not work well with the HTML 4.01 Transitional loose DTD,
 ;; so we define a style modifier which replaces the prefix for HTML rendering.
 (define (with-html5 doc-style)
@@ -148,11 +152,11 @@ EOJS
    ;; <script type="text/x-mathjax-config">
    ;;   MathJax.Hub.Config({ tex2jax: {inlineMath: [['$','$']]} });
    ;; </script>
-   (load-script-string "MathJax/MathJax.js?config=default")))
+   (load-script-string (or (use-external-mathjax) "MathJax/MathJax.js?config=default"))))
 
 #;(define load-mathjax-code
   (string->bytes/utf-8
-   (string-append (load-script-string "MathJax/MathJax.js?config=default")
+   (string-append (or (use-external-mathjax) "MathJax/MathJax.js?config=default")
                   #<<EOJS
 (function(f) {
   // A "simple" onLoad function
@@ -202,8 +206,8 @@ EOJS
 
 (define load-katex-code+style
   (string->bytes/utf-8
-   (string-append (load-style-string "katex/katex.min.css")
-                  (load-script-string "katex/katex.min.js")
+   (string-append (load-style-string (if (use-external-katex) (cadr (use-external-katex)) "katex/katex.min.css"))
+                  (load-script-string (if (use-external-katex) (car (use-external-katex)) "katex/katex.min.js"))
                   #<<EOJS
 (function(f) {
   // A "simple" onLoad function
@@ -269,31 +273,31 @@ EOTEX
 
 (define math-inline-style-mathjax
   (style "math"
-         (list (alt-tag "span")
-               #;(make-css-addition math-inline.css)
-               (install-resource mathjax-dir)
-               (js-addition load-mathjax-code)
-               'exact-chars)))
+         (append (list (alt-tag "span"))
+                 #;(list (make-css-addition math-inline.css))
+                 (if (use-external-mathjax) '() (list (install-resource mathjax-dir)))
+                 (list (js-addition load-mathjax-code))
+                 (list 'exact-chars))))
 
 (define math-display-style-mathjax
   (style "math"
-         (list (alt-tag "div")
-               #;(make-css-addition math-inline.css)
-               (install-resource mathjax-dir)
-               (js-addition load-mathjax-code)
-               'exact-chars)))
+         (append (list (alt-tag "div"))
+                 #;(list (make-css-addition math-inline.css))
+                 (if (use-external-mathjax) '() (list (install-resource mathjax-dir)))
+                 (list (js-addition load-mathjax-code))
+                 (list 'exact-chars))))
 
 (define math-inline-style-katex
   (style "texMathInline"
-         (list (install-resource katex-dir)
-               (js-addition load-katex-code+style)
-               'exact-chars)))
+         (append (if (use-external-katex) '() (list (install-resource katex-dir)))
+                 (list (js-addition load-katex-code+style))
+                 (list 'exact-chars))))
 
 (define math-display-style-katex
   (style "texMathDisplay"
-         (list (install-resource katex-dir)
-               (js-addition load-katex-code+style)
-               'exact-chars)))
+         (append (if (use-external-katex) '() (list (install-resource katex-dir)))
+                 (list (js-addition load-katex-code+style))
+                 (list 'exact-chars))))
 
 (define math-inline-style-latex
   (style "texMathInline"

@@ -279,6 +279,48 @@ details see the documentation of @racket[with-html5].
 
  This parameter requires Racket 6.12 or later.}
 
+@defparam[use-external-mathjax URL string? #:value #f]{
+                                                       
+ A parameter whose value is the URL to the MathJax script
+ to use. The URL must be absolute, or relative to the URL
+ used to display the document.
+
+ For example, if the HTML document is accessed via @tt{
+  file:///home/user/docs/document1/index.html}, and
+ @racket[(use-external-mathjax "../common/MathJax/MathJax.js?config=default")] was
+ used, then MathJax will be loaded from @tt{
+  file:///home/user/docs/common/MathJax/MathJax.js?config=default}.
+
+ An URL to a CDN is also valid, but may be a poor choice
+ regarding the privacy of your users.
+
+ This feature is in beta and might not work, please report
+ any issue.}
+
+@defparam[use-external-katex URLs (list/c string? string?) #:value #f]{
+                                                       
+ A parameter whose value is a list containing the URL to the
+ KaTeX script and the URL to KaTeX CSS to use. The URLs must
+ be absolute, or relative to the URL used to display the
+ document.
+
+ For example, if the HTML document is accessed via @tt{
+  file:///home/user/docs/document1/index.html}, and
+ @racket[(use-external-katex (list "../common/KaTeX/katex.min.js" "../common/KaTeX/katex.min.css"))]
+ was used, then the KaTeX script will be loaded from @tt{
+  file:///home/user/docs/common/KaTeX/katex.min.js} and the
+ KaTeX stylesheet from @tt{
+  file:///home/user/docs/common/KaTeX/katex.min.css}.
+
+ An URL to a CDN is also valid, but may be a poor choice
+ regarding the privacy of your users.
+
+ Please note that using a .js and a .css file which are not
+ in the same directory is unsupported (it has not been tested
+ and may or may not work).
+
+ This feature is in beta and might not work, please report
+ any issue.}
 
 @;@$${\sum_{i=0}ⁿ xᵢ³}
 
