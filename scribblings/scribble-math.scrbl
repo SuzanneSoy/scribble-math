@@ -279,7 +279,7 @@ details see the documentation of @racket[with-html5].
 
  This parameter requires Racket 6.12 or later.}
 
-@defparam[use-external-mathjax URL string? #:value #f]{
+@defparam[use-external-mathjax URL (or/c #f string?) #:value #f]{
                                                        
  A parameter whose value is the URL to the MathJax script
  to use. The URL must be absolute, or relative to the URL
@@ -297,7 +297,7 @@ details see the documentation of @racket[with-html5].
  This feature is in beta and might not work, please report
  any issue.}
 
-@defparam[use-external-katex URLs (list/c string? string?) #:value #f]{
+@defparam[use-external-katex URLs (or/c #f (list/c string? string?)) #:value #f]{
                                                        
  A parameter whose value is a list containing the URL to the
  KaTeX script and the URL to KaTeX CSS to use. The URLs must
