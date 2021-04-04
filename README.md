@@ -1,5 +1,5 @@
-[![Build Status,](https://img.shields.io/travis/jsmaniac/scribble-math/master.svg)](https://travis-ci.org/jsmaniac/scribble-math)
-[![Coverage Status,](https://img.shields.io/coveralls/jsmaniac/scribble-math/master.svg)](https://coveralls.io/github/jsmaniac/scribble-math)
+[![Build Status,](https://img.shields.io/travis/jsmaniac/scribble-math/main.svg)](https://travis-ci.org/jsmaniac/scribble-math)
+[![Coverage Status,](https://img.shields.io/coveralls/jsmaniac/scribble-math/main.svg)](https://coveralls.io/github/jsmaniac/scribble-math)
 [![Build Stats,](https://img.shields.io/badge/build-stats-blue.svg)](http://jsmaniac.github.io/travis-stats/#jsmaniac/scribble-math)
 [![Online Documentation.](https://img.shields.io/badge/docs-online-blue.svg)](http://docs.racket-lang.org/scribble-math/)
 
