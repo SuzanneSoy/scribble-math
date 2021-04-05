@@ -250,7 +250,7 @@ details see the documentation of @racket[with-html5].
 
 @defproc[(use-tex2svg) void?]{
  This shorthand calls @racket[($-html-handler $-tex2svg)] and
- @racket[($$-html-handler $$-tex2svg)]. The mathematical forumulas passed to
+ @racket[($$-html-handler $$-tex2svg)]. The mathematical formulas passed to
  @racket[$] and @racket[$$] which appear later in the document will therefore be
  typeset using @tt{tex2svg}.
 

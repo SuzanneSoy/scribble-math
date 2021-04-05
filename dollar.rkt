@@ -26,7 +26,9 @@
          $$-mathjax
          use-katex
          use-mathjax
-         with-html5)
+         with-html5
+         use-external-katex
+         use-external-mathjax)
 
 (define-syntax (if-version≥6.12 stx)
   (syntax-case stx ()
