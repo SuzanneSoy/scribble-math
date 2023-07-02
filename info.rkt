@@ -9,7 +9,7 @@
                      "scribble-doc"))
 (define compile-omit-paths '("MathJax" "katex"))
 (define test-omit-paths '("MathJax" "katex"))
-(define scribblings '(("scribblings/scribble-math.scrbl" ())))
+(define scribblings '(("scribblings/scribble-math.scrbl" () ("Scribble Libraries"))))
 (define pkg-desc "Typesetting math and Asymptote figures in Scribble documents")
 (define version "0.10")
 (define pkg-authors '(|Suzanne Soy|
