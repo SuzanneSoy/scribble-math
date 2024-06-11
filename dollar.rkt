@@ -14,7 +14,8 @@
          (only-in racket/match match)
          (only-in racket/system process)
          (only-in racket/port port->string)
-         (for-syntax racket/base))
+         (for-syntax racket/base)
+         (only-in net/url string->url))
 
 (provide $
          $$
@@ -148,13 +149,13 @@ EOJS
 EOJS
    ))
 
-(define load-mathjax-code
-  (string->bytes/utf-8
-   ;; To avoid the need to alter the MathJax configuration, add:
-   ;; <script type="text/x-mathjax-config">
-   ;;   MathJax.Hub.Config({ tex2jax: {inlineMath: [['$','$']]} });
-   ;; </script>
-   (load-script-string (or (use-external-mathjax) "MathJax/MathJax.js?config=default"))))
+;; To avoid the need to alter the MathJax configuration, add:
+;; <script type="text/x-mathjax-config">
+;;   MathJax.Hub.Config({ tex2jax: {inlineMath: [['$','$']]} });
+;; </script>
+(define mathjax-path
+  (string->url (or (use-external-mathjax) "MathJax/MathJax.js?config=default")))
+
 
 #;(define load-mathjax-code
   (string->bytes/utf-8
@@ -278,7 +279,7 @@ EOTEX
          (append (list (alt-tag "span"))
                  #;(list (make-css-addition math-inline.css))
                  (if (use-external-mathjax) '() (list (install-resource mathjax-dir)))
-                 (list (js-addition load-mathjax-code))
+                 (list (js-addition mathjax-path))
                  (list 'exact-chars))))
 
 (define math-display-style-mathjax
@@ -286,7 +287,7 @@ EOTEX
          (append (list (alt-tag "div"))
                  #;(list (make-css-addition math-inline.css))
                  (if (use-external-mathjax) '() (list (install-resource mathjax-dir)))
-                 (list (js-addition load-mathjax-code))
+                 (list (js-addition mathjax-path))
                  (list 'exact-chars))))
 
 (define math-inline-style-katex
