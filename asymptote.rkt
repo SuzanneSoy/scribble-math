@@ -23,8 +23,6 @@
              [pdf-path (build-path asymptote-dir pdf-name)]
              [svg-name (string-append md ".svg")]
              [svg-path (build-path asymptote-dir svg-name)])
-        (display (current-directory)) (display md) (newline)
-
         ;; create dir if neccessary
         (unless (directory-exists? asymptote-dir)
           (make-directory asymptote-dir))
