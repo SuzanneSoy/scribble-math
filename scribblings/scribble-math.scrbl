@@ -1,7 +1,10 @@
 #lang scribble/manual
 @require[@for-label[scribble-math
                     racket/base
-                    scribble/core]
+                    racket/contract
+                    scribble/core
+                    scribble/base
+                    scribble/manual]
          @for-syntax[racket/base
                      syntax/parse]
          scribble-math]
@@ -110,21 +113,21 @@ details see the documentation of @racket[with-html5].
  (the @tech[#:doc '(lib "scribblings/scribble/scribble.scrbl")]{prefix file}
  contains the @tt{DOCTYPE} line).}
 
-@defparam[$-html-handler handler (→ (listof? string?) element?)
+@defparam[$-html-handler handler (-> (listof string?) element?)
           #:value $-katex]{
  A parameter whose value is a function called by @racket[$],
  to transform the math code into HTML. The @racket[$]
  function uses this parameter only when rendering the
  document as HTML.}
 
-@defparam[$$-html-handler handler (→ (listof? string?) element?)
+@defparam[$$-html-handler handler (-> (listof string?) element?)
           #:value $$-katex]{
  A parameter whose value is a function called by 
  @racket[$$], to transform the math code into HTML. The 
  @racket[$$] function uses this parameter only when
  rendering the document as HTML. }
 
-@defproc[($-katex [math (listof? string?)]) element?]{
+@defproc[($-katex [math (listof string?)]) element?]{
  Produces an @racket[element?] which contains the given 
  @racket[math] code, so that it is rendered as @tech{inline
   mode} math using KaTeX. More precisely, the resulting
@@ -136,7 +139,7 @@ details see the documentation of @racket[with-html5].
 
  @racket[($-katex "x^2")] renders as @$-katex{x^2}.}
 
-@defproc[($$-katex [math (listof? string?)]) element?]{
+@defproc[($$-katex [math (listof string?)]) element?]{
  Produces an @racket[element?] which contains the given 
  @racket[math] code, so that it is rendered as @tech{display
   mode} math (centered, alone on its line) using KaTeX. More
@@ -152,7 +155,7 @@ details see the documentation of @racket[with-html5].
 
  @$$-katex{\sum_{i=0}^n x_i^3}}
 
-@defproc[($-mathjax [math (listof? string?)]) element?]{
+@defproc[($-mathjax [math (listof string?)]) element?]{
  Produces an @racket[element?] which contains the given 
  @racket[math] code, so that it is rendered as @tech{inline
   mode} math using MathJax. More precisely, the resulting
@@ -164,7 +167,7 @@ details see the documentation of @racket[with-html5].
 
  @racket[($-mathjax "x^2")] renders as @$-mathjax{x^2}.}
 
-@defproc[($$-mathjax [math (listof? string?)]) element?]{
+@defproc[($$-mathjax [math (listof string?)]) element?]{
  Produces an @racket[element?] which contains the given 
  @racket[math] code, so that it is rendered as @tech{display
   mode} math (centered, alone on its line) using KaTeX. More
@@ -181,7 +184,7 @@ details see the documentation of @racket[with-html5].
  @$$-mathjax{\sum_{i=0}^n x_i^3}}
 
 
-@defproc[($-tex2svg [math (listof? string?)]) element?]{
+@defproc[($-tex2svg [math (listof string?)]) element?]{
  Produces an @racket[element?] which contains the given
  @racket[math] rendered as an HTML SVG literal.
  It is rendered in @tech{inline mode} math using @tt{tex2svg}.
@@ -197,7 +200,7 @@ details see the documentation of @racket[with-html5].
 
  This procedure requires Racket 6.12 or later.}
 
-@defproc[($$-tex2svg [math (listof? string?)]) element?]{
+@defproc[($$-tex2svg [math (listof string?)]) element?]{
  Produces an @racket[element?] which contains the given
  @racket[math] rendered as an HTML SVG literal.
  It is rendered in @tech{display mode} math using @tt{tex2svg}.
@@ -340,7 +343,7 @@ text $\sum x^3$ is typeset as-is, like the rest of the text.
 
 @defmodule[scribble-math/asymptote]
 
-@defproc[(asymptote [#:cache cache? any/c #t] [str string?] ...+) image?]{
+@defproc[(asymptote [#:cache cache? any/c #t] [str string?] ...+) image-element?]{
  Renders the figure described by the given strings using
  Asymptote. If @racket[cache?] is @racket[#f], then the
  resulting images are generated into temporary PNG, SVG and

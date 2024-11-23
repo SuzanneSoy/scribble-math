@@ -8,9 +8,7 @@
 
 (define (asymptote #:cache [cache? #t] s . strs)
   (define single-str
-    (with-output-to-string
-     (lambda () (for ([str (in-list `(,s . ,strs))])
-                  (displayln str)))))
+    (string-append (apply ~a #:separator "\n" s strs) "\n"))
   (if cache?
       ;; cache:
       (let* ([asymptote-dir "asymptote-images"]
@@ -25,8 +23,6 @@
              [pdf-path (build-path asymptote-dir pdf-name)]
              [svg-name (string-append md ".svg")]
              [svg-path (build-path asymptote-dir svg-name)])
-        (display (current-directory)) (display md) (newline)
-
         ;; create dir if neccessary
         (unless (directory-exists? asymptote-dir)
           (make-directory asymptote-dir))
